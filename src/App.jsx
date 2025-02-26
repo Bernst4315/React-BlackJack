@@ -16,15 +16,29 @@ function App() {
       //return data; 
     //}
   //getDeck();
-  drawCards(); 
+  drawHand(); 
   }, [])
 
-async function drawCards(){
+async function drawHand(){
   const response = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`);
   const data = await response.json();
   console.log(data)
   setHand(data.cards)
 
+}
+
+async function drawCard(){
+  const response = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
+  const data = await response.json();
+  console.log(data)
+  hand.push(data);
+  setHand(data.cards)
+
+}
+
+function handleClick(){
+  console.log("click")
+  drawCard()
 }
 
 //let cards = drawCards();
@@ -34,6 +48,7 @@ if(hand.length){
   return (
     <>
       {hand.map((card) => <img src={card.image} alt="" />)}
+      <button onClick={() => handleClick()}>Draw</button>
     </>
   )
 }
