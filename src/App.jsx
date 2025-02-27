@@ -5,7 +5,10 @@ import './App.css'
 function App() {
   const deckId = "ot3zvj133gc4"
   const cardUrl = `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=1`
+  const handValue = [];
   
+  let value = handValue.reduce((a,b) => a + b, 0)
+  console.log("the value is " + value);
   const [hand, setHand] = useState([])
 
   useEffect(() => {
@@ -13,7 +16,7 @@ function App() {
     async function getDeck(){
       const response = await fetch(cardUrl);
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       return data; 
     }
   getDeck();
@@ -33,7 +36,7 @@ async function drawCard(){
   const data = await response.json();
   console.log(data)
   const card = data.cards;
-  setHand((prevHand) => [...prevHand, card[0]]);
+  setHand([...hand, card[0]]);
 
 }
 
@@ -45,7 +48,15 @@ if(hand.length){
  
   return (
     <>
-      {hand.map((card) => <img src={card.image} alt="" />)}
+      {hand.map((card) => {
+        //console.log(card),
+        // if(card.value === "JACK" || "QUEEN"|| "King"){
+        //   card.value = 10, 
+        // };
+        handValue.push(card.value);
+        console.log(handValue);
+        return <img src={card.image} alt="" />
+})}
       <button onClick={() => handleClick()}>Draw</button>
     </>
   )
