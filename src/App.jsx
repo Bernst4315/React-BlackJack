@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const deckId = "ot3zvj133gc4"
+  const deckId = "5atqk8u5sb4u"
   const cardUrl = `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=1`
   const handValue = [];
   
@@ -21,7 +21,19 @@ function App() {
     }
   getDeck();
   drawHand(); 
+  //getDeckId(); 
   }, [])
+
+//This function gets a deck ID from the API if the one provided doesn't work. Uncomment to obtain
+//a new id and change the variable deckId on line 6
+
+// async function getDeckId() {
+//   const response = await fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+//   const data = await response.json();
+//   console.log(data)
+//   const deckId = data.deck_id;
+//   return deckId; 
+// }
 
 async function drawHand(){
   const response = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`);
