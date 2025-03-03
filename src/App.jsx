@@ -7,10 +7,10 @@ function App() {
   const cardUrl = `https://deckofcardsapi.com/api/deck/${deckId}/shuffle/?deck_count=1`
   const handValue = [];
   
-  let value = handValue.reduce((a,b) => a + b, 0)
+  //let value = handValue.reduce((a,b) => a + b, 0)
   //console.log("the value is " + value);
   const [hand, setHand] = useState([])
-  const [score, setScore] = useState(0)
+  const [scoreMain, setScoreMain] = useState(0)
 
   useEffect(() => {
     //get deck function resets the deck upon refresh
@@ -59,7 +59,7 @@ async function drawHand(){
       //score += card.value
   })
 
-  setScore(score)
+  setScoreMain(score)
 }
 
 async function drawCard(){
@@ -67,6 +67,25 @@ async function drawCard(){
   const data = await response.json();
   //console.log(data)
   const card = data.cards;
+  let score = scoreMain; 
+  
+  card.map((card) => {
+
+    console.log(card.value)
+      if(card.value === "JACK" || card.value === "QUEEN" || card.value === "King"){
+        //card.value = 10; 
+        score += 10
+      } else if(card.value === "ACE"){
+        score += 1; 
+      }else{
+        score += Number(card.value)
+      }
+
+      //score += card.value
+  })
+
+  setScoreMain(score)
+
   setHand([...hand, card[0]]);
 
 
@@ -81,16 +100,12 @@ if(hand.length){
   return (
     <>
       {hand.map((card) => {
-        //console.log(card),
-        // if(card.value === "JACK" || "QUEEN"|| "King"){
-        //   card.value = 10, 
-        // };
         handValue.push(card.value);
         //console.log(handValue);
         return <img src={card.image} alt="" />
 })}
       <button onClick={() => handleClick()}>Draw</button>
-      <p>{score}</p>
+      <p>{scoreMain}</p>
     </>
   )
 }
