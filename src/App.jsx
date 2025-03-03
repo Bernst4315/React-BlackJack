@@ -8,8 +8,9 @@ function App() {
   const handValue = [];
   
   let value = handValue.reduce((a,b) => a + b, 0)
-  console.log("the value is " + value);
+  //console.log("the value is " + value);
   const [hand, setHand] = useState([])
+  const [score, setScore] = useState(0)
 
   useEffect(() => {
     //get deck function resets the deck upon refresh
@@ -40,15 +41,34 @@ async function drawHand(){
   const data = await response.json();
   console.log(data)
   setHand(data.cards)
+  console.log(data.cards)
+  const hand = data.cards
+  let score = 0; 
+  hand.map((card) => {
 
+    console.log(card.value)
+      if(card.value === "JACK" || card.value === "QUEEN" || card.value === "King"){
+        //card.value = 10; 
+        score += 10
+      } else if(card.value === "ACE"){
+        score += 1; 
+      }else{
+        score += Number(card.value)
+      }
+
+      //score += card.value
+  })
+
+  setScore(score)
 }
 
 async function drawCard(){
   const response = await fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
   const data = await response.json();
-  console.log(data)
+  //console.log(data)
   const card = data.cards;
   setHand([...hand, card[0]]);
+
 
 }
 
@@ -66,10 +86,11 @@ if(hand.length){
         //   card.value = 10, 
         // };
         handValue.push(card.value);
-        console.log(handValue);
+        //console.log(handValue);
         return <img src={card.image} alt="" />
 })}
       <button onClick={() => handleClick()}>Draw</button>
+      <p>{score}</p>
     </>
   )
 }
