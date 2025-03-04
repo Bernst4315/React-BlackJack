@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "./App.css";
+import Hand from "./components/Hand";
 
 function App() {
   const deckId = "5atqk8u5sb4u";
@@ -11,6 +12,8 @@ function App() {
   //console.log("the value is " + value);
   const [hand, setHand] = useState([]);
   const [scoreMain, setScoreMain] = useState(0);
+  const [win, setWin] = useState("");
+  const [end, setEnd] = useState(false)
 
   useEffect(() => {
     //get deck function resets the deck upon refresh
@@ -51,7 +54,7 @@ function App() {
       if (
         card.value === "JACK" ||
         card.value === "QUEEN" ||
-        card.value === "King"
+        card.value === "KING"
       ) {
         //card.value = 10;
         score += 10;
@@ -103,30 +106,29 @@ function App() {
     drawCard();
   }
 
+  function handleEnd(end){
+    setWin("you win")
+    setEnd(true)
+  }
+
   if (hand.length) {
-    if(scoreMain <= 21){
     
-    return (
-      <>
-        {hand.map((card) => {
-          handValue.push(card.value);
-          //console.log(handValue);
-          return <img src={card.image} alt="" />;
-        })}
-        <p>{scoreMain}</p>
-        <button onClick={() => handleClick()}>Draw</button>
-        
-      </>
-    );
+
+ if(scoreMain <=21){
+
+  return (
+    <>
+    <Hand hand={hand} handValue={handValue} scoreMain={scoreMain}/>
+    {!end && <button onClick={() => handleClick()}>Draw</button>}
+    {!end && <button onClick={() => handleEnd(end)}>End</button>}
+    <p>{win}</p>
+    </>
+  )
 }else{
+  
   return(
     <>
-    {hand.map((card) => {
-      handValue.push(card.value);
-      //console.log(handValue);
-      return <img src={card.image} alt="" />;
-    })}
-    <p>{scoreMain}</p>
+    <Hand hand={hand} handValue={handValue} scoreMain={scoreMain}/>
     
 
     <p>You Lose</p>
