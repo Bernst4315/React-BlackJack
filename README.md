@@ -6,4 +6,5 @@ If the provided deck id doesn't work you can get a new one by uncommenting the g
 
 next steps to make it more game like is to add a computer player, and a start game 
 
-unable to upload to netlify
+https://reactblackjack030425.netlify.app/
+App runs slow, usually takes a second for it to update state changes
